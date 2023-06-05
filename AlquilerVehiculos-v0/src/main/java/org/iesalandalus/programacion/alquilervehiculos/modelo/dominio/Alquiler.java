@@ -2,10 +2,11 @@ package org.iesalandalus.programacion.alquilervehiculos.modelo.dominio;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Alquiler {
-    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final int PRECIO_DIA = 20;
     private LocalDate fechaAlquiler;
     private LocalDate fechaDevolucion;
@@ -13,7 +14,7 @@ public class Alquiler {
     private Turismo turismo;
 
     public Alquiler(Cliente cliente, Turismo turismo, LocalDate fechaAlquiler, LocalDate fechaDevolucion) {
-        setCliente(cliente);
+		setCliente(cliente);
         setTurismo(turismo);
         setFechaAlquiler(fechaAlquiler);
         setFechaDevolucion(fechaDevolucion);
@@ -42,15 +43,17 @@ public class Alquiler {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public void devolver(LocalDate fechaDevolucion) throws IllegalArgumentException {
-        setFechaDevolucion(fechaDevolucion);
-    }
-
     private void setCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new NullPointerException("ERROR: El cliente no puede ser nulo.");
+        }
         this.cliente = cliente;
     }
 
     private void setTurismo(Turismo turismo) {
+        if (turismo == null) {
+            throw new NullPointerException("ERROR: El turismo no puede ser nulo.");
+        }
         this.turismo = turismo;
     }
 
@@ -68,6 +71,11 @@ public class Alquiler {
 
     public Turismo getTurismo() {
         return turismo;
+    }
+
+    public double getPrecioAlquiler() {
+        long diasAlquiler = ChronoUnit.DAYS.between(fechaAlquiler, fechaDevolucion) + 1;
+        return diasAlquiler * PRECIO_DIA;
     }
 
     @Override
@@ -91,7 +99,7 @@ public class Alquiler {
     @Override
     public String toString() {
         return String.format(
-                "Alquiler [FORMATO_FECHA=%s, PRECIO_DIA=%s, fechaAlquiler=%s, fechaDevolucion=%s, cliente=%s, turismo=%s]",
-                FORMATO_FECHA, PRECIO_DIA, FORMATO_FECHA.format(fechaAlquiler), FORMATO_FECHA.format(fechaDevolucion), cliente, turismo);
+                "Alquiler [FORMATO_FECHA=%s, PRECIO_DIA=%s, fechaAlquiler=%s, fechaDevolucion=%s, cliente=%s, turismo=%s, precioAlquiler=%s]",
+                FORMATO_FECHA, PRECIO_DIA, FORMATO_FECHA.format(fechaAlquiler), FORMATO_FECHA.format(fechaDevolucion), cliente, turismo, getPrecioAlquiler());
     }
 }
