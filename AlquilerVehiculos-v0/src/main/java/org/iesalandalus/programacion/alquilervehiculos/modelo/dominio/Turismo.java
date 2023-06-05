@@ -3,8 +3,8 @@ package org.iesalandalus.programacion.alquilervehiculos.modelo.dominio;
 import java.util.Objects;
 
 public class Turismo {
-	private static String ER_MARCA= ("(^[A-Z][a-z]+)|(^[A-Z][a-z]+\s[A-Z][a-z]+)|(^[A-Z]+)|(^[A-Z][a-z]+-[A-Z][a-z]+)|(^[A-Z][a-z]+[A-Z][a-z]+)");									
-	private static String ER_MATRICULA= "/d{4}[BCDFGHJKLMNÑPQRSTVWXYZ]{3}"; 
+	private static String ER_MARCA = "(^[A-Z][a-z]+(\\s[A-Z][a-z]+)?)|(^\\p{Lu}+)|(^\\p{Lu}[a-z]+-\\p{Lu}[a-z]+)|(^\\p{Lu}[a-z]+\\p{Lu}[a-z]+)";
+	private static String ER_MATRICULA = "\\d{4}[BCDFGHJKLMNÑPQRSTVWXYZ]{3}";
 	private String marca;
 	private String modelo;
 	private int cilindrada;
@@ -21,10 +21,10 @@ public class Turismo {
 		if (turismo == null) {
 			throw new NullPointerException("ERROR: No es posible copiar un turismo nulo.");
 		}
-		this.marca = marca;
-		this.modelo = modelo;
-		this.cilindrada = cilindrada;
-		this.matricula = matricula;
+		this.marca = "Seat";
+		this.modelo = "León";
+		this.cilindrada = 90;
+		this.matricula = "1234BCD";
 	}
 
 	public String getMarca() {
@@ -59,8 +59,8 @@ public class Turismo {
 
 	private void setModelo(String modelo) {
 		if (modelo == null) {
-            throw new NullPointerException("ERROR: El modelo no puede ser nulo.");
-        }
+			throw new NullPointerException("ERROR: El modelo no puede ser nulo.");
+		}
 		if (modelo.isBlank()) {
 			throw new IllegalArgumentException("ERROR: El modelo no puede estar en blanco.");
 		}
@@ -107,5 +107,9 @@ public class Turismo {
 		return Objects.equals(ER_MARCA, other.ER_MARCA) && Objects.equals(ER_MATRICULA, other.ER_MATRICULA)
 				&& cilindrada == other.cilindrada && Objects.equals(marca, other.marca)
 				&& Objects.equals(matricula, other.matricula) && Objects.equals(modelo, other.modelo);
+	}
+
+	public int getPrecioPorDia() {
+		return 20;
 	}
 }
