@@ -73,16 +73,16 @@ public class Alquileres {
 	}
 
 	public Alquiler devolver(Alquiler alquiler) throws OperationNotSupportedException {
-		if (alquiler == null || !Coleccionalquileres.contains(alquiler)) {
-			throw new OperationNotSupportedException("No se puede devolver el alquiler");
-		}
-		for (Alquiler a : Coleccionalquileres) {
-			if (a.equals(alquiler)) {
-				a.setFechaDevolucion(new LocalDate());
-				return a;
-			}
-		}
-		return null;
+	    if (alquiler == null || !Coleccionalquileres.contains(alquiler)) {
+	        throw new OperationNotSupportedException("No se puede devolver el alquiler");
+	    }
+	    for (Alquiler a : Coleccionalquileres) {
+	        if (a.equals(alquiler)) {
+	            a.setFechaDevolucion(LocalDate.now());
+	            return a;
+	        }
+	    }
+	    return null;
 	}
 
 	public Alquiler buscar(Alquiler alquiler) {
