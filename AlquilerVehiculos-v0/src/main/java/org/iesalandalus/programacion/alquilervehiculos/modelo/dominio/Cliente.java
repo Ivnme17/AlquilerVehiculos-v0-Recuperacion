@@ -6,9 +6,9 @@ public class Cliente {
 	private String nombre;
 	private String telefono;
 	private String dni;
-	private static String ER_NOMBRE = "/^[A-Z][a-z]+((\s[A-Z][a-z]+)*)$/";
-	private static String ER_DNI = "/^\\d{8}[A-Za-z]$/";
-	private static String ER_TELEFONO = "/^\\d{9}$/";
+	private static final String ER_NOMBRE = "^[A-Z][a-z]+(\\s[A-Z][a-z]+)*$";
+	private static final String ER_DNI = "^\\d{8}[A-Za-z]$";
+	private static final String ER_TELEFONO = "^\\d{9}$";
 
 	public Cliente(String nombre, String dni, String telefono) {
 		setNombre(nombre);
@@ -23,15 +23,17 @@ public class Cliente {
 		this.nombre = "Bob Esponja";
 		this.dni = "11223344B";
 		this.telefono = "950112233";
+
 	}
 
 	public static Cliente getClienteConDni(String dni) {
 		if (dni == null) {
 			throw new NullPointerException("ERROR: El DNI no puede ser nulo.");
-		} 
-		
-		else
-			return new Cliente("Bob Esponja", dni, "950112233");
+		}
+		if (!dni.matches(ER_DNI)) {
+			throw new IllegalArgumentException("ERROR: El DNI no tiene un formato válido.");
+		}
+		return new Cliente("Bob Esponja", dni, "950112233");
 
 	}
 
@@ -50,12 +52,11 @@ public class Cliente {
 	}
 
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
 		if (nombre == null) {
 			throw new NullPointerException("ERROR: El nombre no puede ser nulo.");
 		}
-		if (nombre.matches(ER_NOMBRE)) {
-			throw new IllegalArgumentException("El nombre no es valido");
+		if (!nombre.matches(ER_NOMBRE)) {
+			throw new IllegalArgumentException("ERROR: El nombre no tiene un formato válido.");
 		}
 		this.nombre = nombre;
 	}
@@ -65,13 +66,13 @@ public class Cliente {
 	}
 
 	public void setTelefono(String telefono) {
-		this.telefono = telefono;
 		if (telefono == null) {
 			throw new NullPointerException("ERROR: El teléfono no puede ser nulo.");
 		}
-		if (telefono.matches(ER_TELEFONO) ) {
-			throw new IllegalArgumentException("El teléfono no es valido");
+		if (!telefono.matches(ER_TELEFONO)) {
+			throw new IllegalArgumentException("ERROR: El teléfono no tiene un formato válido.");
 		}
+		this.telefono = telefono;
 	}
 
 	public String getDni() {
@@ -82,7 +83,9 @@ public class Cliente {
 		if (dni == null) {
 			throw new NullPointerException("ERROR: El DNI no puede ser nulo.");
 		}
-
+		if (!dni.matches(ER_DNI)) {
+			throw new IllegalArgumentException("ERROR: El DNI no tiene un formato válido.");
+		}
 		this.dni = dni;
 	}
 
