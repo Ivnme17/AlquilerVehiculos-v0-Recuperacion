@@ -1,11 +1,14 @@
 package org.iesalandalus.programacion.alquilervehiculos.vista;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.iesalandalus.programacion.alquilervehiculos.controlador.Controlador;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
 
 public class Vista {
 	private Controlador controlador;
+	private Scanner scanner; 
 
 	public void setControlador(Controlador controlador) {
 		if (controlador != null) {
@@ -18,9 +21,9 @@ public class Vista {
 	public void comenzar() {
 		mostrarMenu();
 
-		Scanner scanner = new Scanner(System.in);
+		scanner = new Scanner(System.in); 
 		int opcion = scanner.nextInt();
-		scanner.nextLine(); // Consumir el salto de línea después de leer la opción
+		scanner.nextLine(); 
 
 		while (opcion != 7) {
 			ejecutar(opcion);
@@ -78,7 +81,7 @@ public class Vista {
 	private void registrarCliente() {
 		try {
 			System.out.println("==== Registrar Cliente ====");
-			// Pedir datos del cliente al usuario
+
 			System.out.print("Nombre: ");
 			String nombre = scanner.nextLine();
 			System.out.print("DNI: ");
@@ -86,7 +89,6 @@ public class Vista {
 			System.out.print("Teléfono: ");
 			String telefono = scanner.nextLine();
 
-			// Llamar al método correspondiente del controlador
 			controlador.registrarCliente(nombre, dni, telefono);
 
 			System.out.println("Cliente registrado correctamente.");
@@ -98,7 +100,7 @@ public class Vista {
 	private void modificarCliente() {
 		try {
 			System.out.println("==== Modificar Cliente ====");
-			// Pedir datos del cliente al usuario
+
 			System.out.print("DNI del cliente a modificar: ");
 			String dni = scanner.nextLine();
 			System.out.print("Nuevo nombre: ");
@@ -106,7 +108,6 @@ public class Vista {
 			System.out.print("Nuevo teléfono: ");
 			String nuevoTelefono = scanner.nextLine();
 
-			// Llamar al método correspondiente del controlador
 			controlador.modificarCliente(dni, nuevoNombre, nuevoTelefono);
 
 			System.out.println("Cliente modificado correctamente.");
@@ -118,11 +119,10 @@ public class Vista {
 	private void eliminarCliente() {
 		try {
 			System.out.println("==== Eliminar Cliente ====");
-			// Pedir DNI del cliente al usuario
+
 			System.out.print("DNI del cliente a eliminar: ");
 			String dni = scanner.nextLine();
 
-			// Llamar al método correspondiente del controlador
 			controlador.eliminarCliente(dni);
 
 			System.out.println("Cliente eliminado correctamente.");
@@ -134,8 +134,8 @@ public class Vista {
 	private void mostrarListaClientes() {
 		try {
 			System.out.println("==== Lista de Clientes ====");
-			// Llamar al método correspondiente del controlador
-			String listaClientes = controlador.getListaClientes();
+
+			List<Cliente> listaClientes = controlador.getListaClientes();
 
 			System.out.println(listaClientes);
 		} catch (Exception e) {
@@ -146,13 +146,12 @@ public class Vista {
 	private void registrarAlquiler() {
 		try {
 			System.out.println("==== Registrar Alquiler ====");
-			// Pedir datos del alquiler al usuario
+
 			System.out.print("DNI del cliente: ");
 			String dniCliente = scanner.nextLine();
 			System.out.print("Matrícula del vehículo: ");
 			String matricula = scanner.nextLine();
 
-			// Llamar al método correspondiente del controlador
 			controlador.registrarAlquiler(dniCliente, matricula);
 
 			System.out.println("Alquiler registrado correctamente.");
@@ -164,13 +163,12 @@ public class Vista {
 	private void finalizarAlquiler() {
 		try {
 			System.out.println("==== Finalizar Alquiler ====");
-			// Pedir datos del alquiler al usuario
+
 			System.out.print("DNI del cliente: ");
 			String dniCliente = scanner.nextLine();
 			System.out.print("Matrícula del vehículo: ");
 			String matricula = scanner.nextLine();
 
-			// Llamar al método correspondiente del controlador
 			controlador.finalizarAlquiler(dniCliente, matricula);
 
 			System.out.println("Alquiler finalizado correctamente.");
