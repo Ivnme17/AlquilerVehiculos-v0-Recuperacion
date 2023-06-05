@@ -40,9 +40,10 @@ public class Cliente {
 			throw new NullPointerException("ERROR: El dni no puede ser nulo.");
 		}
 		if (dni.matches(ER_DNI)) {
+			return true;
+		} else
 			throw new IllegalArgumentException("El valor de dni no es valido");
-		}
-		return false;
+	
 	}
 
 	public String getNombre() {
