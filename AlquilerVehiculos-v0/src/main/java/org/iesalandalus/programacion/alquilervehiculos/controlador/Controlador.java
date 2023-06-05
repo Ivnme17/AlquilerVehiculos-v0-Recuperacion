@@ -1,57 +1,72 @@
 package org.iesalandalus.programacion.alquilervehiculos.controlador;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.Modelo;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Alquiler;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 import org.iesalandalus.programacion.alquilervehiculos.vista.Vista;
 
 public class Controlador {
-    private Vista vista;
-    private Modelo modelo;
+	private Vista vista;
+	private Modelo modelo;
 
-    public Controlador(Vista vista, Modelo modelo) {
-        if (vista == null || modelo == null) {
-            throw new IllegalArgumentException("La vista y el modelo no pueden ser nulos.");
-        }
+	public Controlador(Vista vista, Modelo modelo) {
+		if (vista == null) {
+			throw new IllegalArgumentException("La vista no puede ser nula.");
+		}
+		if (modelo == null) {
+			throw new IllegalArgumentException("El modelo no puede ser nulo.");
+		}
+		this.vista = vista;
+		this.modelo = modelo;
+		this.vista.setControlador(this);
+	}
 
-        this.vista = vista;
-        this.modelo = modelo;
+	public void comenzar() {
+		modelo.comenzar();
+		vista.comenzar();
+	}
 
-        vista.setControlador(this);
-    }
+	public void terminar() {
+		modelo.terminar();
+		vista.terminar();
+	}
 
-    public void comenzar() {
-        modelo.comenzar();
-        vista.comenzar();
-    }
+	public void registrarCliente(String nombre, String dni, String telefono) {
+	    Cliente cliente = new Cliente(nombre, dni, telefono);
+	    modelo.insertarCliente(cliente);
+	}
 
-    public void terminar() {
-        modelo.terminar();
-        vista.terminar();
-    }
+	public void modificarCliente(String dni, String nuevoNombre, String nuevoTelefono) {
+		modelo.modificarCliente(dni, nuevoNombre, nuevoTelefono);
+	}
 
-    public void insertarCliente(String nombre, String dni, String telefono) {
-        modelo.insertar(nombre, dni, telefono);
-    }
+	public void eliminarCliente(String dni) {
+		modelo.borrarCliente(dni);
+	}
 
-    public void modificarCliente(String dni, String nuevoNombre, String nuevoTelefono) {
-        modelo.modificar(dni, nuevoNombre, nuevoTelefono);
-    }
+	public List<Cliente> getListaClientes() {
+		return modelo.getClientes();
+	}
 
-    public void eliminarCliente(String dni) {
-        modelo.borrar(dni);
-    }
+	public void registrarAlquiler(String dniCliente, String matricula) {
+	    Cliente cliente = modelo.buscarCliente(dniCliente);
+	    Turismo turismo = modelo.buscarTurismo(matricula);
+	    if (cliente != null && turismo != null) {
+	        Alquiler alquiler = new Alquiler(cliente, turismo, LocalDate.now(), null);
+	        modelo.abrirAlquiler(alquiler);
+	    }
+	}
 
-    public void mostrarListaClientes() {
-        modelo.mostrarListaClientes();
-    }
-
-    public void registrarAlquiler(String dniCliente, String codigoVehiculo,LocalDate fechaAlquiler, LocalDate FechaDevolucion) {
-        modelo.registrarAlquiler(dniCliente, codigoVehiculo, fechaAlquiler, FechaDevolucion);
-    }
-
-    public void finalizarAlquiler(String codigoVehiculo) {
-        modelo.finalizarAlquiler(codigoVehiculo);
-    }
+	public void finalizarAlquiler(String dniCliente, String matricula) {
+	    Cliente cliente = modelo.buscarCliente(dniCliente);
+	    Turismo turismo = modelo.buscarTurismo(matricula);
+	    if (cliente != null && turismo != null) {
+	        Alquiler alquiler = new Alquiler(cliente, turismo, null, null);
+	        modelo.cerrarAlquiler(alquiler);
+	    }
+	}
 }
-
